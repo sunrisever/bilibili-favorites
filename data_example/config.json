@@ -1,0 +1,13 @@
+{
+  "bilibili": {
+    "sessdata": "你的sessdata",
+    "bili_jct": "你的bili_jct",
+    "buvid3": "你的buvid3",
+    "dedeuserid": "你的uid"
+  },
+  "claude": {
+    "api_key": "你的claude_api_key",
+    "model": "claude-sonnet-4-20250514",
+    "base_url": "https://api.anthropic.com"
+  }
+}
