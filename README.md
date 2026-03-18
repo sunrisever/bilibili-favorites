@@ -2,7 +2,7 @@ English | [简体中文](README_CN.md)
 
 # Bilibili Favorites Classifier
 
-> Classify Bilibili favorites with algorithm + AI review and sync to folders | B站收藏夹分类、审核与同步工具
+> AI-assisted Bilibili favorites classifier and folder sync | AI 辅助的 B站收藏夹分类与同步工具
 
 This project helps you rebuild a messy Bilibili favorites library into a maintainable folder system. It combines data collection, AI-assisted rule generation, algorithm pre-classification, AI review, manual review, and final sync back to Bilibili favorites folders.
 

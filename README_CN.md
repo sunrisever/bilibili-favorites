@@ -2,7 +2,7 @@
 
 # B站收藏夹分类器
 
-> Classify Bilibili favorites with algorithm + AI review and sync to folders | B站收藏夹分类、审核与同步工具
+> AI-assisted Bilibili favorites classifier and folder sync | AI 辅助的 B站收藏夹分类与同步工具
 
 这个项目用来把凌乱的 B 站收藏夹重组为一个可维护的分类系统。它把数据采集、规则生成、算法预分类、AI 审核、人工复核和最终同步串成一条完整流程，适合长期维护大量收藏视频。
 
