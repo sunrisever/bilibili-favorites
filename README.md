@@ -2,183 +2,164 @@ English | [简体中文](README_CN.md)
 
 # Bilibili Favorites
 
-> Export your Bilibili favorites, let ChatGPT / Claude / Gemini / Codex or any frontier LLM help with classification, then sync the final folder plan back to Bilibili favorites.
+> Export Bilibili favorites, classify them locally, optionally let ChatGPT / Claude / Gemini / Codex review the hard cases, then sync the final folder plan back to Bilibili favorites.
 
-This project is for people whose Bilibili favorites have become too large and too messy to manage by hand. The point is not that the repo must have its own hard-wired AI API. The real workflow is:
+This project is for people whose Bilibili favorites have grown too large to maintain by hand.
 
-- fetch and structure your favorites data
-- generate or refine categories locally
-- let a stronger general-purpose AI model review edge cases if you want
-- sync the final folder structure back to Bilibili
+Important clarification:
 
-## What this project actually is
+- Bilibili favorites do **not** provide a strong built-in AI classification workflow.
+- This repository does **not** require a hard-wired LLM API to be useful.
+- The intended workflow is: fetch data locally -> generate rules -> classify -> optionally ask a stronger external model to review -> sync back.
 
-It is a favorites-management pipeline, not just a one-shot classifier.
+## What this project really is
 
-The full idea is:
+It is a favorites-management pipeline:
 
-1. Fetch your favorites and keep local checkpoints.
-2. Generate or refine folder rules.
+1. Fetch favorites and keep checkpoints.
+2. Generate or refine category rules.
 3. Classify videos in stages.
-4. Export readable summaries for AI review or human review.
-5. Preview the sync.
-6. Rebuild your Bilibili favorites folders from the final structured result.
+4. Export readable summaries for review.
+5. Preview sync.
+6. Rebuild favorites folders from the final plan.
 
 ## Do I need an API key?
 
-For the normal beginner workflow: **no**.
+No, not for normal usage.
 
-The easiest and most practical way is:
+The default path is:
 
 - run the local scripts
-- export the readable result files
-- open them in ChatGPT, Claude, Gemini, Codex, Claude Code, OpenCode, or another frontier LLM tool
-- ask the model to review ambiguous items, improve category design, or suggest manual overrides
-- update the local rule files and sync back to Bilibili
+- generate the readable files
+- ask ChatGPT / Claude / Gemini / Codex / Claude Code / OpenCode to review edge cases
+- update local rules
+- sync back
 
-The repository can support API-based automation for advanced users, but that is optional. A beginner does not need to prepare an LLM API key just to get value from the project.
+API-based automation is optional advanced mode only.
 
-## Who this is for
+## Beginner quick start
 
-This project is helpful if you:
-
-- have a large Bilibili favorites library
-- want folders by topic instead of a chaotic flat structure
-- want a workflow stronger than Bilibili's built-in manual organization
-- want to combine local rules, AI review, and final human control
-
-## Core ideas
-
-- **Rule-first, AI-assisted**: AI helps the difficult cases; your rule files remain the long-term source of truth.
-- **Checkpoint-friendly**: large fetches can resume instead of restarting.
-- **Review before sync**: destructive sync comes last, not first.
-- **Incremental maintenance**: new favorites can be processed later without rebuilding everything.
-
-## Beginner workflow
-
-### 1. Install dependencies
+### Step 1. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Copy the example config
+### Step 2. Prepare config
 
-```bash
-cp data_example/config.json data/config.json
-```
+Copy `data_example/config.json` to `data/config.json`.
 
-If you are on Windows, you can also copy the file manually.
+### Step 3. Fill in cookies
 
-### 3. Fill in your Bilibili cookies
-
-Edit `data/config.json` and provide:
+Provide:
 
 - `sessdata`
 - `bili_jct`
 - `buvid3`
 - `dedeuserid`
 
-These are required because the project reads your own favorites and later syncs the folder result back.
-
-### 4. Fetch your favorites
+### Step 4. Fetch favorites
 
 ```bash
 python fetch.py all
-python fetch.py resume
-python fetch.py stats
 ```
 
-Main outputs:
+You should see:
 
 - `data/收藏视频数据.json`
 - `data/fetch_checkpoint.json`
 
-### 5. Generate the first rule set
+### Step 5. Generate rules and classify
 
 ```bash
 python analyze.py
-python analyze.py summary
-```
-
-Main output:
-
-- `data/classify_rules.json`
-
-This rule file is yours. You can keep refining it over time.
-
-### 6. Optionally import UP-master priors
-
-If you also use [bilibili-follow](https://github.com/sunrisever/bilibili-follow), you can import follow-group knowledge into favorites classification:
-
-```bash
-python import_up_map.py
-python import_up_map.py "path/to/bilibili-follow-project"
-```
-
-Main output:
-
-- `data/up_classify_map.json`
-
-### 7. Run the classifier
-
-```bash
 python classify.py
 ```
 
-You can also run staged modes if needed:
+You should then see:
 
-```bash
-python classify.py algo
-python classify.py review
-```
-
-Main outputs:
-
+- `data/classify_rules.json`
 - `data/分类结果.json`
 - `data/分类结果.md`
 
-## Recommended AI-assisted review loop
+### Step 6. Review and sync
 
-This is the part that makes the project much stronger than simple built-in categorization.
-
-After you generate `data/分类结果.md`, you can send it to:
-
-- ChatGPT web/app
-- Claude web/app
-- Gemini
-- Codex
-- Claude Code
-- OpenCode
-- any other strong general-purpose LLM
-
-And ask questions such as:
-
-- which videos seem obviously misclassified?
-- which categories are too broad?
-- which categories should be split?
-- what manual overrides should I add?
-- which rules should be simplified?
-
-This gives you the benefits of strong frontier models **without forcing you to hard-code an API provider into the repo**.
-
-## Preview and sync
-
-Always preview first:
+1. Open `data/分类结果.md`
+2. Give it to your preferred model
+3. Ask for suspicious items, overly broad categories, or suggested manual overrides
+4. Update your local rules
+5. Preview:
 
 ```bash
 python sync.py --dry-run
 ```
 
-Then sync:
+6. Sync:
 
 ```bash
 python sync.py
 ```
 
+## Screenshot-style beginner walkthrough
+
+### What you touch first
+
+Files:
+
+- `data/config.json`
+- `data/classify_rules.json`
+
+### What you run first
+
+```bash
+python fetch.py all
+```
+
+Think of the first “result screen” as:
+
+- your raw favorites are now stored locally
+- the script has not changed your online Bilibili folders yet
+
+### What you run second
+
+```bash
+python analyze.py
+python classify.py
+```
+
+Now you should get:
+
+- a rules file
+- a machine-readable classification file
+- a Markdown review file
+
+### What you give to AI
+
+Give the AI:
+
+- `data/分类结果.md`
+
+Do **not** start with API integration unless you really want scripting later.
+
+Good questions:
+
+- Which videos are obviously misclassified?
+- Which categories should be merged or split?
+- Which manual overrides should I add?
+- Which rules are too weak?
+
+### What finally changes Bilibili
+
+Only after you dry-run and confirm:
+
+```bash
+python sync.py --dry-run
+python sync.py
+```
+
 ## Incremental maintenance
 
-### Process newly favorited videos
+### New favorites
 
 ```bash
 python add_new.py
@@ -192,63 +173,38 @@ python recover.py --dry-run
 python recover.py
 ```
 
-### Generate readable summaries again
+### Regenerate readable summaries
 
 ```bash
 python generate_info.py
 ```
 
-## Files you should know
+## Files that matter
 
 | File | Purpose |
 | --- | --- |
-| `data/config.json` | local cookies and optional advanced runtime config |
+| `data/config.json` | local cookies and runtime config |
 | `data/收藏视频数据.json` | fetched favorites data |
-| `data/fetch_checkpoint.json` | resume support for large fetches |
-| `data/classify_rules.json` | your long-term category rules |
+| `data/fetch_checkpoint.json` | resume support |
+| `data/classify_rules.json` | long-term rule file |
 | `data/up_classify_map.json` | optional prior imported from follow groups |
 | `data/分类结果.json` | machine-readable result |
-| `data/分类结果.md` | AI-friendly and human-friendly review file |
-| `sync.py` | preview or apply favorites-folder sync |
+| `data/分类结果.md` | AI-friendly review file |
+| `sync.py` | preview or apply sync |
 
-## Why this is stronger than basic in-product AI organization
+## Common misunderstandings
 
-Many products say they have AI categorization, but in practice they often feel weak because:
+### “Does Bilibili already have good AI classification here?”
 
-- context is too shallow
-- metadata is too limited
-- the model cannot see your whole taxonomy
-- the logic is hard to inspect
-- the result is hard to improve over time
+No. This project exists because favorites organization is still weak and manual.
 
-This project is stronger because it lets you:
+### “Is this repo built around an LLM provider?”
 
-- export richer data
-- use whichever frontier model you trust most
-- keep category rules editable
-- combine algorithmic processing, AI review, and human judgment
-- reuse the workflow every time your library grows again
+No. It is built around local data, local rules, and optional AI review.
 
-## Safety notes
+### “Do I need an API to get value?”
 
-- `sync.py` rebuilds non-default favorites folders, so always use `--dry-run` first.
-- Cookies expire and need refresh.
-- API-based AI review, if enabled by you, will consume model quota.
-- This workflow is safest when sync is treated as the final step.
-
-## Companion project
-
-- [bilibili-follow](https://github.com/sunrisever/bilibili-follow): classify followed UP masters and feed that signal back into favorites organization
-
-## AI coding assistant support
-
-This repo includes:
-
-- `SKILL.md`
-- `AGENTS.md`
-- `CLAUDE.md`
-
-So it works well with Codex, Claude Code, OpenCode, OpenClaw, and other agent-based workflows.
+No. Subscription tools are the default path.
 
 ## License
 
