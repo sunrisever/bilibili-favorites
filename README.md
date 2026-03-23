@@ -1,12 +1,12 @@
 English | [简体中文](README_CN.md)
 
-# Bilibili Favorites Classifier
+# Bilibili Favorites
 
-> AI-assisted Bilibili favorites classifier and folder sync | AI 辅助的 B站收藏夹分类与同步工具
+> AI-assisted Bilibili favorites organizer and folder sync
 
 This project helps you rebuild a messy Bilibili favorites library into a maintainable folder system. It combines data collection, AI-assisted rule generation, algorithm pre-classification, AI review, manual review, and final sync back to Bilibili favorites folders.
 
-> Companion project: [bilibili-follow-classifier](https://github.com/sunrisever/bilibili-follow-classifier). Import followed UP master categories as a strong signal to improve favorites classification.
+> Companion project: [bilibili-follow](https://github.com/sunrisever/bilibili-follow). Import followed UP master categories as a strong signal to improve favorites classification.
 
 ## Why this project
 
@@ -23,7 +23,7 @@ This repo turns that into a repeatable workflow: collect data, generate rules, r
 - Full favorites fetch with checkpoint resume
 - AI-assisted rule generation from your own data statistics
 - 3-stage pipeline: algorithm -> AI review -> manual review
-- Optional UP master mapping imported from `bilibili-follow-classifier`
+- Optional UP master mapping imported from `bilibili-follow`
 - Incremental processing for new favorites only
 - Recovery flow for missing favorites
 - AI coding assistant support via `SKILL.md`, `AGENTS.md`, and `CLAUDE.md`
@@ -187,7 +187,7 @@ python generate_info.py
 
 ## Related projects
 
-- [bilibili-follow-classifier](https://github.com/sunrisever/bilibili-follow-classifier): classify followed UP masters and reuse the result here
+- [bilibili-follow](https://github.com/sunrisever/bilibili-follow): classify followed UP masters and reuse the result here
 
 ## License
 
